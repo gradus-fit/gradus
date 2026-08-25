@@ -1,0 +1,2 @@
+[alias]
+coverage = "llvm-cov --workspace --all-targets --all-features --ignore-filename-regex /src/private/ --fail-under-lines 100 --fail-under-functions 100"

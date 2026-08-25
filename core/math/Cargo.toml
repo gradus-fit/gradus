@@ -1,0 +1,9 @@
+[package]
+name = "gradus-math"
+description = "Typed arithmetic calculations for Gradus."
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[lib]
+path = "src/lib.rs"

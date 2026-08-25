@@ -1,0 +1,9 @@
+[package]
+name = "gradus-module-template"
+description = "Template for Gradus Core Rust modules."
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[lib]
+path = "src/lib.rs"

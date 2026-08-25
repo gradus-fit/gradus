@@ -1,0 +1,8 @@
+[workspace]
+members = ["*"]
+exclude = [".cargo", "target"]
+resolver = "3"
+
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
