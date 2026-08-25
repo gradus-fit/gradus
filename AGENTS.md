@@ -73,3 +73,4 @@ End to end encrypted monorepo for Gradus Fitness App
 ## Required during development
 
 - Run `pre-commit` at the end of development, to run the full test suite and ensure eveything passes
+- When dealing with new features, do web search, make sure you're using the latest starndards of the programming languages and libraries
