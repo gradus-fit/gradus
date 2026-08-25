@@ -22,3 +22,14 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+      - id: client-validation
+        name: Client Flutter analysis, tests, and coverage
+        entry: >-
+          bash -c 'set -e; for module in client/*; do [ -f "$module/pubspec.yaml" ] ||
+          continue; (cd "$module" && flutter analyze && flutter test --coverage && awk -F:
+          "/^DA:/ { split(\$2, fields, \",\"); total++; if (fields[2] > 0) covered++ } END { if
+          (total == 0 || covered != total) { printf \"Coverage: %d/%d\\n\", covered, total; exit 1
+          } }" coverage/lcov.info); done'
+        language: system
+        pass_filenames: false
+        always_run: true

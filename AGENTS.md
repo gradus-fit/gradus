@@ -5,7 +5,7 @@ End to end encrypted monorepo for Gradus Fitness App
 ## Lego based development
 
 ### What is a module
-- First level of folders divide each one of the monorepo components: server, core. Start by running `cd` into the relevant folder
+- First level of folders divide each one of the monorepo components: server, core, client. Start by running `cd` into the relevant folder
 - Inside each folder you'll find **module** folders. Only folders within a component are modules; repository-level directories such as `docs` are not modules.
 - A module is:
     - A self contained piece of code with a public interface and private code to make it possible to provide the public interface.
@@ -30,13 +30,19 @@ End to end encrypted monorepo for Gradus Fitness App
 - Tests must use `@pytest.mark.public_api("src.<module>", "<export>", ...)` to declare every public export they exercise
 - Pytest enforces that every `__all__` export is declared by at least one test.
 
+#### Dart / Flutter
+- Client modules are direct children of `client/` and each has its own `pubspec.yaml`, README, `lib/`, and `test/` directories. `client/pubspec.yaml` is the shared Dart workspace configuration, not a module.
+- `lib/<package_name>.dart` is a module's sole supported public import and exports its public API. `lib/src/` contains implementation details and is not exported.
+- Tests import the package public library only; they must not import `lib/src/`.
+- `client/app` is the Flutter application composition root. It owns platform runners, startup, route registration, and dependency construction, but no feature or business logic.
+
 ### Developing new code
 - Each module should have 100% test coverage for its public interface.
 - You are forbidden to edit two modules at the same time. If I ask you to develop a feature that would require editing two modules:
     - Refuse developing the feature
     - Reply with one or more PRDs: a document with a request that I can use to implement the required changes in the module you're blocked, so you can continue your work
     - PRDs lives in the `docs` folder in repo root
-- Always edit the mermaid chart at `docs/<server|core>.mmd` connecting boxes to show module graph dependencies
+- Always edit the mermaid chart at `docs/<component>.mmd` connecting boxes to show module graph dependencies. Arrows point from a dependency to its consumer.
 - If you feel that a feature would need two or more modules to be created from scratch, push back and create PRDs instead
 
 ## Components
@@ -69,6 +75,13 @@ End to end encrypted monorepo for Gradus Fitness App
 - Responsabilities:
     - Provide registrarion, billing, admin features
     - User data Vault: receives and provides user encrypted blobs. This is a E2E encrypted app, server cannot read user data
+
+### Client
+- Flutter application targeting iOS and Android, with Linux desktop available for local prototyping.
+- Responsibilities:
+    - Present user-facing fitness features through self-contained Client modules
+    - Consume Core Dart bindings for parsing, vault schemas, and cryptography
+    - Keep UI state in the client and persist only encrypted user data
 
 ## Required during development
 

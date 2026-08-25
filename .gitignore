@@ -10,6 +10,7 @@
 build/
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
+!client/pubspec.lock
 
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
@@ -35,6 +36,25 @@ doc/api/
 .env
 
 ### Flutter ###
+# Flutter app, IDE, and build artifacts
+*.class
+*.log
+*.swp
+.atom/
+.build/
+.buildlog/
+.history/
+.svn/
+.swiftpm/
+migrate_working_dir/
+*.iml
+*.ipr
+*.iws
+.idea/
+app.*.symbols
+app.*.map.json
+.widget_preview/
+
 # Flutter/Dart/Pub related
 **/doc/api/
 .fvm/flutter_sdk
@@ -56,6 +76,9 @@ lib/generated_plugin_registrant.dart
 **/android/key.properties
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -145,8 +168,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/

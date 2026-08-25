@@ -1,0 +1,9 @@
+name: gradus_client_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.13.1
+
+workspace:
+  - app
+  - hello_button
