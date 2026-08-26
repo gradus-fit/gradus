@@ -2,12 +2,17 @@
 
 
 from src.api import app
+from src.config import ConfigurationVariable, get_integer, get_string
 import uvicorn
 
 
 def main() -> None:
     """Run the Gradus HTTP server."""
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(
+        app,
+        host=get_string(ConfigurationVariable.SERVER_HOST),
+        port=get_integer(ConfigurationVariable.SERVER_PORT),
+    )
 
 
 if __name__ == "__main__":

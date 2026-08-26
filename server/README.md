@@ -2,10 +2,17 @@
 
 ## Run locally
 
-From this directory, start the HTTP server:
+From this directory, configure the server through exported variables or a `.env` file:
+
+```dotenv
+SERVER_HOST=127.0.0.1
+SERVER_PORT=8000
+```
+
+Then start the HTTP server:
 
 ```sh
 uv run python main.py
 ```
 
-The server listens on `http://127.0.0.1:8000`. Visit `/` to receive the hello-world response.
+The server listens on the configured host and port. Visit `/` to receive the hello-world response.
