@@ -1,0 +1,21 @@
+[package]
+name = "gradus-encryption-fuzz"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+gradus-encryption = { path = ".." }
+libfuzzer-sys = "0.4"
+
+[[bin]]
+name = "decode_and_decrypt"
+path = "fuzz_targets/decode_and_decrypt.rs"
+test = false
+doc = false
+bench = false

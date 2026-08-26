@@ -1,0 +1,22 @@
+[package]
+name = "gradus-encryption"
+description = "Versioned envelope encryption for Gradus vault blobs."
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+chacha20poly1305 = "0.10"
+getrandom = { version = "0.3", features = ["wasm_js"] }
+# `chacha20poly1305` currently brings getrandom 0.2 through rand_core; enable
+# its browser-Wasm backend as well so the crate builds independently for Wasm.
+getrandom_02 = { package = "getrandom", version = "0.2", features = ["js"] }
+hkdf = "0.12"
+sha2 = "0.10"
+zeroize = "1.8"
+
+[dev-dependencies]
+hex = "0.4"

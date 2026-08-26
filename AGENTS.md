@@ -14,6 +14,7 @@ End to end encrypted monorepo for Gradus Fitness App
 - Dependencies are shared: use the component dependency managment tool that is shared across all modules
 - I should be able to copy and paste those modules and use them without too much modifications
 - You are allowed on depending on another module to make your module work, but keep them as flat as possible
+- Module README.md is for consumers, should not describe internal behaviour or decisions that are not relevant for a public consumer that does not care about internals
 
 ### Module Layout Conventions
 
