@@ -30,6 +30,17 @@ def test_get_string_reads_an_allowlisted_process_variable(
     assert get_string(ConfigurationVariable.SERVER_HOST) == "0.0.0.0"
 
 
+@pytest.mark.public_api(MODULE_NAME, "ConfigurationVariable", "get_string")
+def test_get_string_reads_database_url_from_process_environment(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Database URLs are available through the allowlisted string getter."""
+    database_url = "sqlite:///./db.sqlite3"
+    monkeypatch.setenv(ConfigurationVariable.DATABASE_URL, database_url)
+
+    assert get_string(ConfigurationVariable.DATABASE_URL) == database_url
+
+
 @pytest.mark.public_api(MODULE_NAME, "get_string")
 def test_get_string_reads_a_dotenv_value(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
@@ -89,6 +100,20 @@ def test_get_string_rejects_missing_values(
         get_string(ConfigurationVariable.SERVER_PORT)
 
     assert isinstance(error.value, ConfigurationError)
+
+
+@pytest.mark.public_api(
+    MODULE_NAME, "ConfigurationVariable", "get_string", "ConfigurationValueError"
+)
+def test_get_string_rejects_missing_database_url(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """An absent database URL raises the existing public configuration error."""
+    monkeypatch.delenv(ConfigurationVariable.DATABASE_URL, raising=False)
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(ConfigurationValueError, match="DATABASE_URL is not set"):
+        get_string(ConfigurationVariable.DATABASE_URL)
 
 
 @pytest.mark.public_api(MODULE_NAME, "get_string", "ConfigurationValueError")

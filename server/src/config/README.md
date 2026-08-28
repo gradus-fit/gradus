@@ -17,6 +17,7 @@ Only these environment variables may be read:
 
 | Variable | Intended type | Description |
 | --- | --- | --- |
+| `DATABASE_URL` | string | Connection URL consumed by the database module. |
 | `SERVER_HOST` | string | Address on which the HTTP server listens. |
 | `SERVER_PORT` | integer | Port on which the HTTP server listens. |
 

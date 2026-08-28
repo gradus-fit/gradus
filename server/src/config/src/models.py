@@ -8,6 +8,7 @@ from enum import StrEnum
 class ConfigurationVariable(StrEnum):
     """Environment variables the server is permitted to read."""
 
+    DATABASE_URL = "DATABASE_URL"
     SERVER_HOST = "SERVER_HOST"
     SERVER_PORT = "SERVER_PORT"
 
