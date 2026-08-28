@@ -4,5 +4,7 @@ flowchart TB
     api["api"]
     config["config"]
     database["database"]
+    migrations["migrations"]
 
     config --> database
+    database --> migrations

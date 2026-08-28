@@ -16,4 +16,4 @@ Then start the HTTP server:
 uv run python main.py
 ```
 
-The server listens on the configured host and port. Visit `/` to receive the hello-world response.
+Before accepting traffic, the command applies all reviewed Alembic migrations to `DATABASE_URL`. The server listens on the configured host and port. Visit `/` to receive the hello-world response.
