@@ -11,7 +11,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  gradus_hello_button: ^0.1.0
 
 dev_dependencies:
   flutter_test:
