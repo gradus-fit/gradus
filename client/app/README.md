@@ -30,5 +30,5 @@ flutter analyze
 flutter test
 ```
 
-`client/app` contains only application startup and composition. Future features,
-storage, and design-system packages will be sibling Client modules.
+`client/app` contains only application startup and composition. Future Client
+features and storage packages will be sibling Client modules.

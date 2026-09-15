@@ -334,3 +334,6 @@ debug/
 *.pdb
 
 # End of https://www.toptal.com/developers/gitignore/api/python,flutter,dart,rust,nextjs
+
+.playwright-cli/
+.vscode

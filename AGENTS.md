@@ -5,7 +5,7 @@ End to end encrypted monorepo for Gradus Fitness App
 ## Lego based development
 
 ### What is a module
-- First level of folders divide each one of the monorepo components: server, core, client. Start by running `cd` into the relevant folder
+- First-level folders divide the monorepo into components: `server`, `core`, `client`, and `design-system`. Start by running `cd` into the relevant folder.
 - Inside each folder you'll find **module** folders. Only folders within a component are modules; repository-level directories such as `docs` are not modules.
 - A module is:
     - A self contained piece of code with a public interface and private code to make it possible to provide the public interface.
@@ -83,6 +83,10 @@ End to end encrypted monorepo for Gradus Fitness App
     - Present user-facing fitness features through self-contained Client modules
     - Consume Core Dart bindings for parsing, vault schemas, and cryptography
     - Keep UI state in the client and persist only encrypted user data
+
+### Design system
+- Browser-first visual studies and HTML components, independent of the Flutter client.
+- Prototypes may be ported to Flutter when appropriate, but the design-system component has no Flutter dependency.
 
 ## Required during development
 
