@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Gradus · Activity archive · Modern Palaestra</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      --canvas: #d7cdbd;
+      --paper: #f4efe5;
+      --paper-deep: #ebe2d3;
+      --ink: #29251f;
+      --muted: #6d655a;
+      --line: #c9bcaa;
+      --line-strong: #8a7c68;
+      --terracotta: #a94d35;
+      --terracotta-deep: #763523;
+      --blue: #2e6871;
+      --white: #fffdf8;
+      --shadow: 0 22px 55px rgb(67 53 34 / 18%);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--sans);
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--canvas); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(115deg, rgb(255 255 255 / 18%), transparent 36%),
+        repeating-linear-gradient(90deg, transparent 0 89px, rgb(91 73 49 / 3%) 90px),
+        var(--canvas);
+      font-variant-numeric: tabular-nums;
+    }
+    a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+    .screen {
+      width: min(100%, 560px);
+      min-height: 100vh;
+      margin: 0 auto;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgb(255 255 255 / 30%), transparent 8% 92%, rgb(83 61 35 / 4%)),
+        var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .masthead {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      min-height: 66px;
+      padding: 0 20px 10px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .masthead::after {
+      position: absolute;
+      right: 20px;
+      bottom: 4px;
+      left: 20px;
+      height: 3px;
+      content: "";
+      background: repeating-linear-gradient(90deg, var(--terracotta) 0 18px, transparent 18px 23px, var(--ink) 23px 27px, transparent 27px 32px);
+      opacity: .72;
+    }
+    .masthead-context, .masthead-period {
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 760;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+    .masthead-period { justify-self: end; }
+    .brand {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -.04em;
+    }
+    .brand::after { margin-left: 5px; color: var(--terracotta); content: "·"; }
+    .hero {
+      position: relative;
+      padding: 37px 24px 30px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 86% 20%, rgb(255 255 255 / 70%), transparent 26%),
+        linear-gradient(150deg, var(--paper), var(--paper-deep));
+    }
+    .hero-statue {
+      position: absolute;
+      top: 7px;
+      right: clamp(10px, 5vw, 28px);
+      width: auto;
+      height: clamp(250px, 52vw, 290px);
+      opacity: .38;
+      filter: sepia(.18) saturate(.55) contrast(1.02);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-kicker, .section-label {
+      position: relative;
+      display: block;
+      margin: 0 0 12px;
+      color: var(--terracotta-deep);
+      font-size: .67rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: var(--serif); }
+    h1 {
+      position: relative;
+      margin-bottom: 13px;
+      font-size: clamp(3.1rem, 14vw, 4.8rem);
+      font-weight: 500;
+      letter-spacing: -.075em;
+      line-height: .88;
+    }
+    .hero-meta {
+      position: relative;
+      margin-bottom: 82px;
+      color: var(--muted);
+      font-size: .85rem;
+      line-height: 1.5;
+    }
+    .summary {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .metric { min-width: 0; padding: 14px 8px 13px 0; }
+    .metric + .metric { padding-left: 10px; border-left: 1px solid var(--line); }
+    .metric-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(1.18rem, 5vw, 1.48rem);
+      font-weight: 600;
+      letter-spacing: -.035em;
+      overflow-wrap: anywhere;
+    }
+    .metric-label {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: .59rem;
+      font-weight: 800;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+    .archive { padding: 32px 24px 0; }
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 17px;
+    }
+    .section-heading .section-label { margin-bottom: 7px; }
+    h2 { margin: 0; font-size: 1.8rem; font-weight: 550; letter-spacing: -.045em; line-height: 1; }
+    .section-context {
+      flex: none;
+      margin-bottom: 2px;
+      color: var(--muted);
+      font-size: .64rem;
+      font-weight: 780;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .activity-list { margin: 0; padding: 0; list-style: none; }
+    .activity-list li + li { margin-top: 14px; }
+    .activity-link {
+      display: grid;
+      grid-template-columns: 43px minmax(0, 1fr) 15px;
+      gap: 15px;
+      align-items: center;
+      min-height: 136px;
+      padding: 17px 15px;
+      border: 1px solid #b7aa97;
+      background: var(--white);
+      box-shadow: 4px 5px 0 rgb(103 77 46 / 10%);
+      color: inherit;
+      text-decoration: none;
+    }
+    .activity-link:hover { border-color: var(--terracotta); background: #fffaf2; }
+    .activity-date {
+      align-self: start;
+      display: block;
+      padding-top: 1px;
+      border-top: 2px solid var(--terracotta);
+      text-align: center;
+    }
+    .activity-date strong { display: block; margin-top: 5px; font-family: var(--serif); font-size: 1.35rem; font-weight: 600; }
+    .activity-date span { color: var(--muted); font-size: .64rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .activity-kind {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--terracotta-deep);
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .run .activity-date { border-color: var(--blue); }
+    .run .activity-kind { color: var(--blue); }
+    h3 { margin: 0 0 10px; font-size: 1.27rem; font-weight: 600; letter-spacing: -.035em; line-height: 1.05; }
+    .activity-facts { display: flex; flex-wrap: wrap; gap: 4px 11px; color: var(--muted); font-size: .72rem; line-height: 1.4; }
+    .activity-facts strong { color: var(--ink); font-weight: 700; }
+    .activity-arrow { align-self: center; color: var(--terracotta-deep); font-size: 1.2rem; }
+    .archive-end {
+      margin: 27px 0 0;
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .74rem;
+      text-align: center;
+    }
+    .prototype-note { margin: 0; padding: 12px 24px 36px; color: var(--muted); font-size: .67rem; line-height: 1.5; text-align: center; }
+    @media (min-width: 620px) {
+      body { padding: 30px 0; }
+      .screen { min-height: calc(100vh - 60px); border: 1px solid #b8aa96; }
+    }
+    @media (max-width: 390px) {
+      .masthead { padding-right: 16px; padding-left: 16px; }
+      .masthead::after { right: 16px; left: 16px; }
+      .hero, .archive { padding-right: 18px; padding-left: 18px; }
+      .activity-link { gap: 10px; padding-right: 12px; padding-left: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <nav class="masthead" aria-label="Archive context">
+      <span class="masthead-context">Activity</span>
+      <span class="brand">Gradus</span>
+      <span class="masthead-period">2026</span>
+    </nav>
+
+    <header class="hero">
+      <img class="hero-statue" src="assets/disk.png" alt="" width="1093" height="1438">
+      <p class="hero-kicker">Your history · April 2026</p>
+      <h1>Your<br>activity.</h1>
+      <p class="hero-meta">A record of the work you’ve put in.</p>
+      <div class="summary" aria-label="April activity summary">
+        <div class="metric"><span class="metric-value">2</span><span class="metric-label">Activities</span></div>
+        <div class="metric"><span class="metric-value">1h 40m</span><span class="metric-label">Time active</span></div>
+        <div class="metric"><span class="metric-value">7.24 km</span><span class="metric-label">Run distance</span></div>
+      </div>
+    </header>
+
+    <section class="archive" aria-labelledby="archive-title">
+      <div class="section-heading">
+        <div><span class="section-label">Recent activity</span><h2 id="archive-title">April 2026</h2></div>
+        <span class="section-context">2 sessions</span>
+      </div>
+      <ol class="activity-list">
+        <li>
+          <a class="activity-link" href="gym-activity-detail.html">
+            <time class="activity-date" datetime="2026-04-16"><strong>16</strong><span>Thu</span></time>
+            <div><span class="activity-kind">Strength · Completed</span><h3>Strength session</h3><span class="activity-facts"><span><strong>58 min</strong></span><span>6 exercises</span><span>8,390 kg volume</span></span></div>
+            <span class="activity-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li>
+          <a class="activity-link run" href="activity-detail.html">
+            <time class="activity-date" datetime="2026-04-14"><strong>14</strong><span>Tue</span></time>
+            <div><span class="activity-kind">Run · Completed</span><h3>Morning run</h3><span class="activity-facts"><span><strong>7.24 km</strong></span><span>42:18</span><span>5:51 / km</span></span></div>
+            <span class="activity-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ol>
+      <p class="archive-end">Two activities shown in this study.</p>
+    </section>
+    <p class="prototype-note">Modern Palaestra activity archive study · illustrative activity data</p>
+  </main>
+</body>
+</html>

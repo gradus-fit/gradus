@@ -1,0 +1,977 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Gradus · Full body A · Workout in progress</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      --canvas: #d7cdbd;
+      --paper: #f4efe5;
+      --paper-deep: #ebe2d3;
+      --ink: #29251f;
+      --muted: #6d655a;
+      --line: #c9bcaa;
+      --line-strong: #8a7c68;
+      --terracotta: #a94d35;
+      --terracotta-deep: #763523;
+      --terracotta-soft: #ead4c8;
+      --blue: #2e6871;
+      --blue-soft: #c9dcda;
+      --olive: #6f693b;
+      --olive-soft: #dcd8bd;
+      --white: #fffdf8;
+      --shadow: 0 22px 55px rgb(67 53 34 / 18%);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--sans);
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--canvas); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(115deg, rgb(255 255 255 / 18%), transparent 36%),
+        repeating-linear-gradient(90deg, transparent 0 89px, rgb(91 73 49 / 3%) 90px),
+        var(--canvas);
+      font-variant-numeric: tabular-nums;
+    }
+
+    button, input { font: inherit; }
+    button:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    .screen {
+      width: min(100%, 560px);
+      min-height: 100vh;
+      margin: 0 auto;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgb(255 255 255 / 30%), transparent 8% 92%, rgb(83 61 35 / 4%)),
+        var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .masthead {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      min-height: 66px;
+      padding: 0 20px 10px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .masthead::after {
+      position: absolute;
+      right: 20px;
+      bottom: 4px;
+      left: 20px;
+      height: 3px;
+      content: "";
+      background: repeating-linear-gradient(90deg, var(--terracotta) 0 18px, transparent 18px 23px, var(--ink) 23px 27px, transparent 27px 32px);
+      opacity: .72;
+    }
+    .masthead-link {
+      justify-self: start;
+      padding: 12px 0;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 760;
+      letter-spacing: .08em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .masthead-link span { margin-right: 5px; font-size: 1rem; }
+    .brand {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -.04em;
+    }
+    .brand::after { margin-left: 5px; color: var(--terracotta); content: "·"; }
+    .timer {
+      justify-self: end;
+      color: var(--terracotta-deep);
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 650;
+    }
+    .timer-label {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: .5rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 320px;
+      padding: 42px 24px 28px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 86% 20%, rgb(255 255 255 / 70%), transparent 26%),
+        linear-gradient(150deg, var(--paper), var(--paper-deep));
+    }
+    .hero-statue {
+      position: absolute;
+      top: 8px;
+      right: clamp(32px, 10vw, 56px);
+      width: auto;
+      height: clamp(220px, 47vw, 268px);
+      opacity: .38;
+      filter: sepia(.18) saturate(.55) contrast(1.02);
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-kicker, .section-label {
+      position: relative;
+      display: block;
+      margin: 0 0 11px;
+      color: var(--terracotta-deep);
+      font-size: .65rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: var(--serif); }
+    h1 {
+      position: relative;
+      max-width: 380px;
+      margin-bottom: 16px;
+      font-size: clamp(3.35rem, 16vw, 4.9rem);
+      font-weight: 500;
+      letter-spacing: -.075em;
+      line-height: .84;
+    }
+    .hero-meta {
+      position: relative;
+      margin-bottom: 24px;
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.5;
+    }
+    .hero-meta strong { color: var(--ink); }
+    .progress-block { position: relative; }
+    .progress-copy {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      font-size: .66rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .progress-copy span:last-child { color: var(--muted); }
+    .progress-track {
+      height: 7px;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      background: var(--paper);
+    }
+    .progress-bar {
+      width: 16.67%;
+      height: 100%;
+      background: var(--terracotta);
+      transition: width .25s ease;
+    }
+    .summary {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 20px;
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .metric { min-width: 0; padding: 12px 8px 11px 0; }
+    .metric + .metric { padding-left: 10px; border-left: 1px solid var(--line); }
+    .metric-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -.035em;
+      white-space: nowrap;
+    }
+    .metric-label {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .55rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .coach-tips { padding: 36px 24px 0; }
+    .coach-brief {
+      margin: 0;
+      border: 1px solid #c9a895;
+      border-left: 4px solid var(--terracotta);
+      background: var(--white);
+      box-shadow: 4px 5px 0 rgb(103 77 46 / 9%);
+    }
+    .coach-brief > summary { cursor: pointer; list-style: none; }
+    .coach-brief > summary::-webkit-details-marker { display: none; }
+    .coach-brief > summary:focus-visible { outline-offset: -4px; }
+    .coach-summary-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 15px;
+      align-items: end;
+      padding: 18px 17px 15px;
+      background: rgb(169 77 53 / 5%);
+    }
+    .coach-summary-head .section-label { margin-bottom: 6px; }
+    .coach-title {
+      display: block;
+      font-family: var(--serif);
+      font-size: 1.68rem;
+      font-weight: 550;
+      letter-spacing: -.045em;
+      line-height: 1;
+    }
+    .coach-count {
+      margin-bottom: 2px;
+      color: var(--muted);
+      font-size: .57rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .tip-preview {
+      position: relative;
+      display: block;
+      max-height: 132px;
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+    }
+    .tip-preview::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 42px;
+      content: "";
+      background: linear-gradient(transparent, var(--white));
+      pointer-events: none;
+    }
+    .coach-brief[open] .tip-preview { display: none; }
+    .preview-tip {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 11px;
+      min-height: 88px;
+      padding: 14px 17px;
+      border-bottom: 1px solid var(--line);
+    }
+    .preview-number, .full-tip-number {
+      color: var(--terracotta-deep);
+      font-family: var(--serif);
+      font-size: .72rem;
+    }
+    .preview-title, .full-tip-title {
+      display: block;
+      margin-bottom: 5px;
+      font-family: var(--serif);
+      font-size: .96rem;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+    .preview-copy {
+      display: block;
+      color: #554d43;
+      font-size: .7rem;
+      line-height: 1.45;
+    }
+    .coach-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 43px;
+      padding: 0 17px;
+      border-top: 1px solid var(--line);
+      color: var(--terracotta-deep);
+      font-size: .58rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .coach-toggle::after { content: "+"; font-size: 1.15rem; font-weight: 450; }
+    .coach-brief[open] .coach-toggle { display: none; }
+    .coach-full {
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--line);
+      list-style: none;
+    }
+    .full-tip {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 11px;
+      padding: 16px 17px;
+    }
+    .full-tip + .full-tip { border-top: 1px solid var(--line); }
+    .full-tip-kind {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: .53rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .full-tip-copy { margin: 0; color: #554d43; font-size: .73rem; line-height: 1.55; }
+    .full-tip-copy strong { color: var(--ink); }
+    .coach-collapse {
+      display: flex;
+      width: 100%;
+      min-height: 43px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 17px;
+      border: 0;
+      border-top: 1px solid var(--line);
+      background: transparent;
+      color: var(--terracotta-deep);
+      cursor: pointer;
+      font-size: .58rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .coach-collapse span { font-size: 1.15rem; font-weight: 450; }
+    .coach-collapse:hover { background: rgb(169 77 53 / 5%); }
+
+    .workout { padding: 40px 24px 0; }
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 17px;
+    }
+    .section-heading .section-label { margin-bottom: 7px; }
+    h2 {
+      margin-bottom: 0;
+      font-size: 1.8rem;
+      font-weight: 550;
+      letter-spacing: -.045em;
+      line-height: 1;
+    }
+    .section-context {
+      flex: none;
+      margin-bottom: 2px;
+      color: var(--muted);
+      font-size: .62rem;
+      font-weight: 780;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .exercise-stack { display: grid; gap: 18px; }
+    .exercise-card {
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid #b7aa97;
+      background: var(--white);
+      box-shadow: 4px 5px 0 rgb(103 77 46 / 10%);
+    }
+    .exercise-card.current { border-color: #a76e58; box-shadow: 4px 5px 0 rgb(169 77 53 / 14%); }
+    .exercise-card.complete { border-color: #9c9872; }
+    .exercise-header {
+      display: grid;
+      grid-template-columns: 35px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 17px;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper-deep);
+    }
+    .current .exercise-header {
+      background:
+        linear-gradient(100deg, rgb(169 77 53 / 12%), transparent 70%),
+        var(--paper-deep);
+    }
+    .complete .exercise-header {
+      background:
+        linear-gradient(100deg, rgb(111 105 59 / 10%), transparent 70%),
+        var(--paper-deep);
+    }
+    .exercise-number {
+      color: var(--terracotta-deep);
+      font-family: var(--serif);
+      font-size: .78rem;
+    }
+    .exercise-name { margin: 0 0 3px; font-size: 1.16rem; font-weight: 600; letter-spacing: -.025em; }
+    .prescription { color: var(--muted); font-size: .63rem; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
+    .exercise-state {
+      color: var(--muted);
+      font-size: .56rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .current .exercise-state { color: var(--terracotta-deep); }
+    .complete .exercise-state { color: var(--olive); }
+
+    .set-log { padding: 8px 14px 14px; }
+    .set-columns, .set-row {
+      display: grid;
+      grid-template-columns: 26px minmax(48px, .8fr) minmax(54px, 1fr) minmax(49px, .8fr) 38px;
+      gap: 8px;
+      align-items: center;
+    }
+    .set-columns {
+      min-height: 32px;
+      color: var(--muted);
+      font-size: .52rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .set-columns span:first-child { text-align: left; }
+    .set-row {
+      min-height: 51px;
+      border-top: 1px solid var(--line);
+    }
+    .set-number { color: var(--muted); font-family: var(--serif); font-size: .8rem; }
+    .set-target { color: #554d43; font-size: .7rem; line-height: 1.25; text-align: center; }
+    .set-target strong { display: block; color: var(--ink); font-family: var(--serif); font-size: .87rem; }
+    .entry {
+      width: 100%;
+      height: 34px;
+      min-width: 0;
+      padding: 0 6px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: .78rem;
+      font-weight: 650;
+      text-align: center;
+    }
+    .entry::placeholder { color: #908679; font-weight: 500; opacity: 1; }
+    .entry:invalid:not(:placeholder-shown) { border-color: var(--terracotta); }
+    .set-check {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      justify-self: end;
+      cursor: pointer;
+    }
+    .set-check input {
+      width: 19px;
+      height: 19px;
+      margin: 0;
+      accent-color: var(--olive);
+      cursor: pointer;
+    }
+    .set-row:has(.set-check input:checked) { background: rgb(111 105 59 / 5%); }
+    .set-row:has(.set-check input:checked) .set-number { color: var(--olive); font-weight: 700; }
+    .exercise-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding-top: 13px;
+      border-top: 1px solid var(--line-strong);
+    }
+    .exercise-message { margin: 0; color: var(--muted); font-size: .65rem; line-height: 1.35; }
+    .exercise-button {
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid var(--terracotta-deep);
+      background: transparent;
+      color: var(--terracotta-deep);
+      cursor: pointer;
+      font-size: .59rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .exercise-button:hover { background: var(--terracotta-soft); }
+    .complete .exercise-button { border-color: var(--olive); color: var(--olive); }
+    .exercise-button:disabled { cursor: default; opacity: .7; }
+
+    .timed .set-columns, .timed .set-row { grid-template-columns: 28px 1fr 1fr 38px; }
+
+    .session-note {
+      margin: 34px 24px 0;
+      padding: 17px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .session-note label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: .59rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .session-note input {
+      width: 100%;
+      min-height: 42px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: var(--white);
+      color: var(--ink);
+      font-size: .78rem;
+    }
+
+    .vault {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 13px;
+      align-items: center;
+      margin: 31px 24px 0;
+      padding: 17px 0;
+      border-top: 1px solid var(--line);
+    }
+    .vault-mark {
+      display: grid;
+      width: 35px;
+      height: 39px;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 18px 18px 5px 5px;
+      color: var(--terracotta-deep);
+      font-size: .9rem;
+    }
+    .vault strong { display: block; margin-bottom: 3px; font-family: var(--serif); font-size: .92rem; }
+    .vault p { margin: 0; color: var(--muted); font-size: .68rem; line-height: 1.45; }
+    .prototype-note {
+      margin: 0;
+      padding: 24px 24px 108px;
+      color: var(--muted);
+      font-size: .66rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .finish-bar {
+      position: fixed;
+      z-index: 4;
+      right: max(0px, calc((100vw - 560px) / 2));
+      bottom: 0;
+      left: max(0px, calc((100vw - 560px) / 2));
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      min-height: 78px;
+      padding: 12px 20px;
+      border-top: 1px solid var(--line-strong);
+      background: rgb(244 239 229 / 96%);
+      box-shadow: 0 -10px 30px rgb(67 53 34 / 13%);
+      backdrop-filter: blur(10px);
+    }
+    .finish-progress strong { display: block; margin-bottom: 3px; font-family: var(--serif); font-size: .95rem; }
+    .finish-progress span { color: var(--muted); font-size: .63rem; }
+    .finish-button {
+      min-height: 48px;
+      padding: 0 19px;
+      border: 1px solid var(--terracotta-deep);
+      background: var(--terracotta);
+      color: var(--white);
+      cursor: pointer;
+      font-size: .67rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .finish-button:hover { background: var(--terracotta-deep); }
+    .finish-button.done { border-color: var(--olive); background: var(--olive); }
+    .finish-button:disabled { cursor: default; opacity: 1; }
+    .session-status { margin: 0; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 620px) {
+      body { padding: 30px 0 0; }
+      .screen { min-height: calc(100vh - 30px); border: 1px solid #b8aa96; border-bottom: 0; }
+      .finish-bar { bottom: 0; }
+    }
+    @media (max-width: 390px) {
+      .masthead { padding-right: 16px; padding-left: 16px; }
+      .masthead::after { right: 16px; left: 16px; }
+      .hero, .coach-tips, .workout { padding-right: 18px; padding-left: 18px; }
+      .coach-summary-head, .preview-tip, .full-tip { padding-right: 13px; padding-left: 13px; }
+      .coach-toggle, .coach-collapse { padding-right: 13px; padding-left: 13px; }
+      .exercise-header { padding-right: 13px; padding-left: 13px; }
+      .set-log { padding-right: 10px; padding-left: 10px; }
+      .set-columns, .set-row { grid-template-columns: 23px minmax(43px, .75fr) minmax(48px, 1fr) minmax(45px, .8fr) 31px; gap: 5px; }
+      .timed .set-columns, .timed .set-row { grid-template-columns: 25px 1fr 1fr 32px; }
+      .exercise-actions { grid-template-columns: 1fr; }
+      .exercise-button { width: 100%; }
+      .session-note, .vault { margin-right: 18px; margin-left: 18px; }
+      .finish-bar { padding-right: 16px; padding-left: 16px; }
+      .finish-button { padding: 0 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+    @media (forced-colors: active) {
+      .progress-bar { background: Highlight; }
+      .set-check input { forced-color-adjust: auto; }
+      .finish-button { border: 2px solid ButtonText; }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <nav class="masthead" aria-label="Workout context">
+      <a class="masthead-link" href="#"><span aria-hidden="true">←</span> Training plan</a>
+      <span class="brand">Gradus</span>
+      <span class="timer"><span class="timer-label">Elapsed</span><span id="timer">18:42</span></span>
+    </nav>
+
+    <header class="hero">
+      <img class="hero-statue" src="assets/gym-display.png" alt="" width="392" height="588">
+      <p class="hero-kicker">Workout in progress</p>
+      <h1>Full body<br>A</h1>
+      <p class="hero-meta"><strong>Thursday, 23 April</strong><br>Started at 18:04</p>
+      <div class="progress-block" aria-label="Workout progress">
+        <div class="progress-copy" aria-live="polite"><span id="exercise-progress">1 of 6 exercises</span><span id="set-progress">6 of 19 sets</span></div>
+        <div class="progress-track" id="progress-track" role="progressbar" aria-label="Exercises completed" aria-valuemin="0" aria-valuemax="6" aria-valuenow="1"><div class="progress-bar" id="progress-bar"></div></div>
+      </div>
+      <div class="summary" aria-label="Workout plan summary">
+        <div class="metric"><span class="metric-value">6</span><span class="metric-label">Exercises</span></div>
+        <div class="metric"><span class="metric-value">19</span><span class="metric-label">Working sets</span></div>
+        <div class="metric"><span class="metric-value">RPE 7</span><span class="metric-label">Target effort</span></div>
+      </div>
+    </header>
+
+    <section class="coach-tips" aria-labelledby="coach-tips-title">
+      <details class="coach-brief">
+        <summary aria-label="Coach tips, four notes. Show or hide the full brief.">
+          <span class="coach-summary-head">
+            <span><span class="section-label">Coach’s brief</span><span class="coach-title" id="coach-tips-title" role="heading" aria-level="2">Coach tips</span></span>
+            <span class="coach-count">4 notes</span>
+          </span>
+          <span class="tip-preview" aria-hidden="true">
+            <span class="preview-tip"><span class="preview-number">01</span><span><strong class="preview-title">Keep two reps in reserve.</strong><span class="preview-copy">Use the proposed load as a guide. Reduce it when two more clean repetitions would not be possible.</span></span></span>
+            <span class="preview-tip"><span class="preview-number">02</span><span><strong class="preview-title">Brace before the bar moves.</strong><span class="preview-copy">Create steady trunk pressure before each squat and hinge repetition.</span></span></span>
+          </span>
+          <span class="coach-toggle">Show all tips</span>
+        </summary>
+        <ol class="coach-full">
+          <li class="full-tip"><span class="full-tip-number">01</span><div><strong class="full-tip-title">Keep two reps in reserve.</strong><span class="full-tip-kind">Effort</span><p class="full-tip-copy">Use the proposed load as a guide. Reduce it if you could not complete <strong>two more clean repetitions</strong> after the target.</p></div></li>
+          <li class="full-tip"><span class="full-tip-number">02</span><div><strong class="full-tip-title">Brace before the bar moves.</strong><span class="full-tip-kind">Technique</span><p class="full-tip-copy">Before each squat and Romanian deadlift set, take your position, breathe in, and create steady trunk pressure before beginning the repetition.</p></div></li>
+          <li class="full-tip"><span class="full-tip-number">03</span><div><strong class="full-tip-title">Let readiness set the rest.</strong><span class="full-tip-kind">Recovery</span><p class="full-tip-copy">The rest interval is a reference, not a deadline. Begin the next set when your breathing is controlled and you can repeat the previous set’s technique.</p></div></li>
+          <li class="full-tip"><span class="full-tip-number">04</span><div><strong class="full-tip-title">Why the large lifts come first.</strong><span class="full-tip-kind">Curiosity</span><p class="full-tip-copy">Squats, presses, and hinges ask for more coordination. Placing them before accessory work helps preserve the quality of the main training.</p></div></li>
+        </ol>
+        <button class="coach-collapse" id="collapse-coach-brief" type="button">Hide full brief <span aria-hidden="true">−</span></button>
+      </details>
+    </section>
+
+    <form id="workout-form" novalidate>
+      <section class="workout" aria-labelledby="exercises-title">
+        <div class="section-heading">
+          <div><span class="section-label">Today’s work</span><h2 id="exercises-title">Exercises</h2></div>
+          <span class="section-context">In order</span>
+        </div>
+
+        <div class="exercise-stack">
+          <fieldset class="exercise-card complete" data-exercise>
+            <legend class="sr-only">Exercise 1: Back squat</legend>
+            <div class="exercise-header">
+              <span class="exercise-number">01</span>
+              <div><h3 class="exercise-name">Back squat</h3><span class="prescription">4 sets · 6 reps · 75 kg proposed</span></div>
+              <span class="exercise-state" data-state>Complete</span>
+            </div>
+            <div class="set-log">
+              <div class="set-columns" aria-hidden="true"><span>Set</span><span>Target</span><span>Actual kg</span><span>Reps</span><span>Done</span></div>
+              <div class="set-row"><span class="set-number">1</span><span class="set-target"><strong>75 kg</strong>× 6</span><label class="sr-only" for="squat-weight-1">Back squat set 1 actual weight in kilograms</label><input class="entry" id="squat-weight-1" type="number" min="0" step="0.5" value="75" placeholder="75" inputmode="decimal" required><label class="sr-only" for="squat-reps-1">Back squat set 1 actual repetitions</label><input class="entry" id="squat-reps-1" type="number" min="0" step="1" value="6" placeholder="6" inputmode="numeric" required><label class="set-check"><span class="sr-only">Back squat set 1 done</span><input type="checkbox" checked></label></div>
+              <div class="set-row"><span class="set-number">2</span><span class="set-target"><strong>75 kg</strong>× 6</span><label class="sr-only" for="squat-weight-2">Back squat set 2 actual weight in kilograms</label><input class="entry" id="squat-weight-2" type="number" min="0" step="0.5" value="75" placeholder="75" inputmode="decimal" required><label class="sr-only" for="squat-reps-2">Back squat set 2 actual repetitions</label><input class="entry" id="squat-reps-2" type="number" min="0" step="1" value="6" placeholder="6" inputmode="numeric" required><label class="set-check"><span class="sr-only">Back squat set 2 done</span><input type="checkbox" checked></label></div>
+              <div class="set-row"><span class="set-number">3</span><span class="set-target"><strong>75 kg</strong>× 6</span><label class="sr-only" for="squat-weight-3">Back squat set 3 actual weight in kilograms</label><input class="entry" id="squat-weight-3" type="number" min="0" step="0.5" value="77.5" placeholder="75" inputmode="decimal" required><label class="sr-only" for="squat-reps-3">Back squat set 3 actual repetitions</label><input class="entry" id="squat-reps-3" type="number" min="0" step="1" value="6" placeholder="6" inputmode="numeric" required><label class="set-check"><span class="sr-only">Back squat set 3 done</span><input type="checkbox" checked></label></div>
+              <div class="set-row"><span class="set-number">4</span><span class="set-target"><strong>75 kg</strong>× 6</span><label class="sr-only" for="squat-weight-4">Back squat set 4 actual weight in kilograms</label><input class="entry" id="squat-weight-4" type="number" min="0" step="0.5" value="77.5" placeholder="75" inputmode="decimal" required><label class="sr-only" for="squat-reps-4">Back squat set 4 actual repetitions</label><input class="entry" id="squat-reps-4" type="number" min="0" step="1" value="6" placeholder="6" inputmode="numeric" required><label class="set-check"><span class="sr-only">Back squat set 4 done</span><input type="checkbox" checked></label></div>
+              <div class="exercise-actions"><p class="exercise-message" aria-live="polite">4 sets logged · 1,830 kg volume</p><button class="exercise-button" type="button" data-complete>Reopen exercise</button></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="exercise-card current" data-exercise>
+            <legend class="sr-only">Exercise 2: Bench press</legend>
+            <div class="exercise-header">
+              <span class="exercise-number">02</span>
+              <div><h3 class="exercise-name">Bench press</h3><span class="prescription">4 sets · 8 reps · 60 kg proposed</span></div>
+              <span class="exercise-state" data-state>Current</span>
+            </div>
+            <div class="set-log">
+              <div class="set-columns" aria-hidden="true"><span>Set</span><span>Target</span><span>Actual kg</span><span>Reps</span><span>Done</span></div>
+              <div class="set-row"><span class="set-number">1</span><span class="set-target"><strong>60 kg</strong>× 8</span><label class="sr-only" for="bench-weight-1">Bench press set 1 actual weight in kilograms</label><input class="entry" id="bench-weight-1" type="number" min="0" step="0.5" value="60" placeholder="60" inputmode="decimal" required><label class="sr-only" for="bench-reps-1">Bench press set 1 actual repetitions</label><input class="entry" id="bench-reps-1" type="number" min="0" step="1" value="8" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Bench press set 1 done</span><input type="checkbox" checked></label></div>
+              <div class="set-row"><span class="set-number">2</span><span class="set-target"><strong>60 kg</strong>× 8</span><label class="sr-only" for="bench-weight-2">Bench press set 2 actual weight in kilograms</label><input class="entry" id="bench-weight-2" type="number" min="0" step="0.5" value="60" placeholder="60" inputmode="decimal" required><label class="sr-only" for="bench-reps-2">Bench press set 2 actual repetitions</label><input class="entry" id="bench-reps-2" type="number" min="0" step="1" value="8" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Bench press set 2 done</span><input type="checkbox" checked></label></div>
+              <div class="set-row"><span class="set-number">3</span><span class="set-target"><strong>60 kg</strong>× 8</span><label class="sr-only" for="bench-weight-3">Bench press set 3 actual weight in kilograms</label><input class="entry" id="bench-weight-3" type="number" min="0" step="0.5" placeholder="60" inputmode="decimal" required><label class="sr-only" for="bench-reps-3">Bench press set 3 actual repetitions</label><input class="entry" id="bench-reps-3" type="number" min="0" step="1" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Bench press set 3 done</span><input type="checkbox"></label></div>
+              <div class="set-row"><span class="set-number">4</span><span class="set-target"><strong>60 kg</strong>× 8</span><label class="sr-only" for="bench-weight-4">Bench press set 4 actual weight in kilograms</label><input class="entry" id="bench-weight-4" type="number" min="0" step="0.5" placeholder="60" inputmode="decimal" required><label class="sr-only" for="bench-reps-4">Bench press set 4 actual repetitions</label><input class="entry" id="bench-reps-4" type="number" min="0" step="1" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Bench press set 4 done</span><input type="checkbox"></label></div>
+              <div class="exercise-actions"><p class="exercise-message" aria-live="polite">Set 3 is next · rest 01:24</p><button class="exercise-button" type="button" data-complete>Complete exercise</button></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="exercise-card" data-exercise>
+            <legend class="sr-only">Exercise 3: Romanian deadlift</legend>
+            <div class="exercise-header"><span class="exercise-number">03</span><div><h3 class="exercise-name">Romanian deadlift</h3><span class="prescription">3 sets · 8 reps · 80 kg proposed</span></div><span class="exercise-state" data-state>Next</span></div>
+            <div class="set-log">
+              <div class="set-columns" aria-hidden="true"><span>Set</span><span>Target</span><span>Actual kg</span><span>Reps</span><span>Done</span></div>
+              <div class="set-row"><span class="set-number">1</span><span class="set-target"><strong>80 kg</strong>× 8</span><label class="sr-only" for="rdl-weight-1">Romanian deadlift set 1 actual weight in kilograms</label><input class="entry" id="rdl-weight-1" type="number" min="0" step="0.5" placeholder="80" inputmode="decimal" required><label class="sr-only" for="rdl-reps-1">Romanian deadlift set 1 actual repetitions</label><input class="entry" id="rdl-reps-1" type="number" min="0" step="1" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Romanian deadlift set 1 done</span><input type="checkbox"></label></div>
+              <div class="set-row"><span class="set-number">2</span><span class="set-target"><strong>80 kg</strong>× 8</span><label class="sr-only" for="rdl-weight-2">Romanian deadlift set 2 actual weight in kilograms</label><input class="entry" id="rdl-weight-2" type="number" min="0" step="0.5" placeholder="80" inputmode="decimal" required><label class="sr-only" for="rdl-reps-2">Romanian deadlift set 2 actual repetitions</label><input class="entry" id="rdl-reps-2" type="number" min="0" step="1" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Romanian deadlift set 2 done</span><input type="checkbox"></label></div>
+              <div class="set-row"><span class="set-number">3</span><span class="set-target"><strong>80 kg</strong>× 8</span><label class="sr-only" for="rdl-weight-3">Romanian deadlift set 3 actual weight in kilograms</label><input class="entry" id="rdl-weight-3" type="number" min="0" step="0.5" placeholder="80" inputmode="decimal" required><label class="sr-only" for="rdl-reps-3">Romanian deadlift set 3 actual repetitions</label><input class="entry" id="rdl-reps-3" type="number" min="0" step="1" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Romanian deadlift set 3 done</span><input type="checkbox"></label></div>
+              <div class="exercise-actions"><p class="exercise-message" aria-live="polite">Not started</p><button class="exercise-button" type="button" data-complete>Complete exercise</button></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="exercise-card" data-exercise>
+            <legend class="sr-only">Exercise 4: Lat pulldown</legend>
+            <div class="exercise-header"><span class="exercise-number">04</span><div><h3 class="exercise-name">Lat pulldown</h3><span class="prescription">3 sets · 10 reps · 50 kg proposed</span></div><span class="exercise-state" data-state>Later</span></div>
+            <div class="set-log">
+              <div class="set-columns" aria-hidden="true"><span>Set</span><span>Target</span><span>Actual kg</span><span>Reps</span><span>Done</span></div>
+              <div class="set-row"><span class="set-number">1</span><span class="set-target"><strong>50 kg</strong>× 10</span><label class="sr-only" for="pull-weight-1">Lat pulldown set 1 actual weight in kilograms</label><input class="entry" id="pull-weight-1" type="number" min="0" step="0.5" placeholder="50" inputmode="decimal" required><label class="sr-only" for="pull-reps-1">Lat pulldown set 1 actual repetitions</label><input class="entry" id="pull-reps-1" type="number" min="0" step="1" placeholder="10" inputmode="numeric" required><label class="set-check"><span class="sr-only">Lat pulldown set 1 done</span><input type="checkbox"></label></div>
+              <div class="set-row"><span class="set-number">2</span><span class="set-target"><strong>50 kg</strong>× 10</span><label class="sr-only" for="pull-weight-2">Lat pulldown set 2 actual weight in kilograms</label><input class="entry" id="pull-weight-2" type="number" min="0" step="0.5" placeholder="50" inputmode="decimal" required><label class="sr-only" for="pull-reps-2">Lat pulldown set 2 actual repetitions</label><input class="entry" id="pull-reps-2" type="number" min="0" step="1" placeholder="10" inputmode="numeric" required><label class="set-check"><span class="sr-only">Lat pulldown set 2 done</span><input type="checkbox"></label></div>
+              <div class="set-row"><span class="set-number">3</span><span class="set-target"><strong>50 kg</strong>× 10</span><label class="sr-only" for="pull-weight-3">Lat pulldown set 3 actual weight in kilograms</label><input class="entry" id="pull-weight-3" type="number" min="0" step="0.5" placeholder="50" inputmode="decimal" required><label class="sr-only" for="pull-reps-3">Lat pulldown set 3 actual repetitions</label><input class="entry" id="pull-reps-3" type="number" min="0" step="1" placeholder="10" inputmode="numeric" required><label class="set-check"><span class="sr-only">Lat pulldown set 3 done</span><input type="checkbox"></label></div>
+              <div class="exercise-actions"><p class="exercise-message" aria-live="polite">Not started</p><button class="exercise-button" type="button" data-complete>Complete exercise</button></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="exercise-card" data-exercise>
+            <legend class="sr-only">Exercise 5: Dumbbell lunge</legend>
+            <div class="exercise-header"><span class="exercise-number">05</span><div><h3 class="exercise-name">Dumbbell lunge</h3><span class="prescription">3 sets · 8 each side · 2 × 18 kg proposed</span></div><span class="exercise-state" data-state>Later</span></div>
+            <div class="set-log">
+              <div class="set-columns" aria-hidden="true"><span>Set</span><span>Target</span><span>Each kg</span><span>Reps</span><span>Done</span></div>
+              <div class="set-row"><span class="set-number">1</span><span class="set-target"><strong>2 × 18</strong>× 8</span><label class="sr-only" for="lunge-weight-1">Dumbbell lunge set 1 actual weight of each dumbbell in kilograms</label><input class="entry" id="lunge-weight-1" type="number" min="0" step="0.5" placeholder="18" inputmode="decimal" required><label class="sr-only" for="lunge-reps-1">Dumbbell lunge set 1 actual repetitions on each side</label><input class="entry" id="lunge-reps-1" type="number" min="0" step="1" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Dumbbell lunge set 1 done</span><input type="checkbox"></label></div>
+              <div class="set-row"><span class="set-number">2</span><span class="set-target"><strong>2 × 18</strong>× 8</span><label class="sr-only" for="lunge-weight-2">Dumbbell lunge set 2 actual weight of each dumbbell in kilograms</label><input class="entry" id="lunge-weight-2" type="number" min="0" step="0.5" placeholder="18" inputmode="decimal" required><label class="sr-only" for="lunge-reps-2">Dumbbell lunge set 2 actual repetitions on each side</label><input class="entry" id="lunge-reps-2" type="number" min="0" step="1" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Dumbbell lunge set 2 done</span><input type="checkbox"></label></div>
+              <div class="set-row"><span class="set-number">3</span><span class="set-target"><strong>2 × 18</strong>× 8</span><label class="sr-only" for="lunge-weight-3">Dumbbell lunge set 3 actual weight of each dumbbell in kilograms</label><input class="entry" id="lunge-weight-3" type="number" min="0" step="0.5" placeholder="18" inputmode="decimal" required><label class="sr-only" for="lunge-reps-3">Dumbbell lunge set 3 actual repetitions on each side</label><input class="entry" id="lunge-reps-3" type="number" min="0" step="1" placeholder="8" inputmode="numeric" required><label class="set-check"><span class="sr-only">Dumbbell lunge set 3 done</span><input type="checkbox"></label></div>
+              <div class="exercise-actions"><p class="exercise-message" aria-live="polite">Not started</p><button class="exercise-button" type="button" data-complete>Complete exercise</button></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="exercise-card timed" data-exercise>
+            <legend class="sr-only">Exercise 6: Plank</legend>
+            <div class="exercise-header"><span class="exercise-number">06</span><div><h3 class="exercise-name">Plank</h3><span class="prescription">2 sets · 45 seconds proposed</span></div><span class="exercise-state" data-state>Later</span></div>
+            <div class="set-log">
+              <div class="set-columns" aria-hidden="true"><span>Set</span><span>Target</span><span>Actual seconds</span><span>Done</span></div>
+              <div class="set-row"><span class="set-number">1</span><span class="set-target"><strong>45 sec</strong>hold</span><label class="sr-only" for="plank-time-1">Plank set 1 actual duration in seconds</label><input class="entry" id="plank-time-1" type="number" min="0" step="1" placeholder="45" inputmode="numeric" required><label class="set-check"><span class="sr-only">Plank set 1 done</span><input type="checkbox"></label></div>
+              <div class="set-row"><span class="set-number">2</span><span class="set-target"><strong>45 sec</strong>hold</span><label class="sr-only" for="plank-time-2">Plank set 2 actual duration in seconds</label><input class="entry" id="plank-time-2" type="number" min="0" step="1" placeholder="45" inputmode="numeric" required><label class="set-check"><span class="sr-only">Plank set 2 done</span><input type="checkbox"></label></div>
+              <div class="exercise-actions"><p class="exercise-message" aria-live="polite">Not started</p><button class="exercise-button" type="button" data-complete>Complete exercise</button></div>
+            </div>
+          </fieldset>
+        </div>
+      </section>
+
+      <div class="session-note">
+        <label for="workout-note">Session note · optional</label>
+        <input id="workout-note" type="text" placeholder="How did today’s training feel?">
+      </div>
+    </form>
+
+    <aside class="vault" aria-label="Privacy status">
+      <span class="vault-mark" aria-hidden="true">⌾</span>
+      <div><strong>Private by design</strong><p>In the product, this workout will be saved to your end-to-end encrypted vault.</p></div>
+    </aside>
+
+    <p class="prototype-note">Modern Palaestra workout study · illustrative training data</p>
+  </main>
+
+  <div class="finish-bar" aria-label="Workout completion">
+    <div class="finish-progress"><strong id="finish-title">13 sets remaining</strong><p class="session-status"><span id="finish-status" aria-live="polite">Prototype entries remain only on this page.</span></p></div>
+    <button class="finish-button" id="finish-workout" type="button">Finish workout</button>
+  </div>
+
+  <script>
+    const coachBrief = document.querySelector('.coach-brief');
+    const coachBriefSummary = coachBrief.querySelector('summary');
+    const exerciseCards = [...document.querySelectorAll('[data-exercise]')];
+    const allChecks = [...document.querySelectorAll('.set-check input')];
+    const allEntries = [...document.querySelectorAll('.entry')];
+    const timer = document.querySelector('#timer');
+    const finishButton = document.querySelector('#finish-workout');
+    let elapsedSeconds = (18 * 60) + 42;
+
+    document.querySelector('#collapse-coach-brief').addEventListener('click', () => {
+      coachBrief.open = false;
+      coachBriefSummary.focus();
+    });
+
+    const setCurrentExercise = () => {
+      const firstIncomplete = exerciseCards.find((card) => !card.classList.contains('complete'));
+      exerciseCards.forEach((card) => card.classList.remove('current'));
+      if (firstIncomplete) {
+        firstIncomplete.classList.add('current');
+        exerciseCards.forEach((card, index) => {
+          const state = card.querySelector('[data-state]');
+          if (card.classList.contains('complete')) state.textContent = 'Complete';
+          else if (card === firstIncomplete) state.textContent = 'Current';
+          else state.textContent = index === exerciseCards.indexOf(firstIncomplete) + 1 ? 'Next' : 'Later';
+        });
+      } else {
+        exerciseCards.forEach((card) => { card.querySelector('[data-state]').textContent = 'Complete'; });
+      }
+    };
+
+    const updateProgress = () => {
+      const checkedSets = allChecks.filter((checkbox) => checkbox.checked).length;
+      const completedExercises = exerciseCards.filter((card) => card.classList.contains('complete')).length;
+      const remainingSets = allChecks.length - checkedSets;
+      document.querySelector('#exercise-progress').textContent = `${completedExercises} of ${exerciseCards.length} exercises`;
+      document.querySelector('#set-progress').textContent = `${checkedSets} of ${allChecks.length} sets`;
+      document.querySelector('#progress-bar').style.width = `${(completedExercises / exerciseCards.length) * 100}%`;
+      document.querySelector('#progress-track').setAttribute('aria-valuenow', completedExercises);
+      document.querySelector('#finish-title').textContent = remainingSets === 0 ? 'All sets complete' : `${remainingSets} ${remainingSets === 1 ? 'set' : 'sets'} remaining`;
+    };
+
+    const validateExercise = (card) => {
+      const rows = [...card.querySelectorAll('.set-row')];
+      for (const row of rows) {
+        const fields = [...row.querySelectorAll('.entry')];
+        const missing = fields.find((field) => field.value === '' || !field.checkValidity());
+        if (missing) {
+          card.querySelector('.exercise-message').textContent = 'Add the actual result for every set.';
+          missing.focus();
+          return false;
+        }
+      }
+      return true;
+    };
+
+    document.querySelectorAll('[data-complete]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const card = button.closest('[data-exercise]');
+        const checks = [...card.querySelectorAll('.set-check input')];
+        if (card.classList.contains('complete')) {
+          card.classList.remove('complete');
+          button.textContent = 'Complete exercise';
+          card.querySelector('.exercise-message').textContent = 'Exercise reopened for editing.';
+        } else {
+          if (!validateExercise(card)) return;
+          checks.forEach((checkbox) => { checkbox.checked = true; });
+          card.classList.add('complete');
+          button.textContent = 'Reopen exercise';
+          card.querySelector('.exercise-message').textContent = `${checks.length} sets logged`;
+        }
+        setCurrentExercise();
+        updateProgress();
+      });
+    });
+
+    allChecks.forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        const card = checkbox.closest('[data-exercise]');
+        const row = checkbox.closest('.set-row');
+        const missing = [...row.querySelectorAll('.entry')].find((field) => field.value === '' || !field.checkValidity());
+        if (checkbox.checked && missing) {
+          checkbox.checked = false;
+          card.querySelector('.exercise-message').textContent = 'Add the actual result before marking this set done.';
+          missing.focus();
+          updateProgress();
+          return;
+        }
+
+        const cardChecks = [...card.querySelectorAll('.set-check input')];
+        if (cardChecks.every((item) => item.checked)) {
+          card.classList.add('complete');
+          card.querySelector('[data-complete]').textContent = 'Reopen exercise';
+          card.querySelector('.exercise-message').textContent = `${cardChecks.length} sets logged`;
+        } else if (card.classList.contains('complete')) {
+          card.classList.remove('complete');
+          card.querySelector('[data-complete]').textContent = 'Complete exercise';
+          card.querySelector('.exercise-message').textContent = 'Exercise reopened for editing.';
+        }
+        setCurrentExercise();
+        updateProgress();
+      });
+    });
+
+    allEntries.forEach((entry) => {
+      entry.addEventListener('input', () => {
+        const row = entry.closest('.set-row');
+        const checkbox = row.querySelector('.set-check input');
+        if (!checkbox.checked) return;
+        const card = entry.closest('[data-exercise]');
+        checkbox.checked = false;
+        card.classList.remove('complete');
+        card.querySelector('[data-complete]').textContent = 'Complete exercise';
+        card.querySelector('.exercise-message').textContent = 'Edited set marked incomplete. Confirm it again when ready.';
+        setCurrentExercise();
+        updateProgress();
+      });
+    });
+
+    const focusControl = (control) => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      control.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      control.focus({ preventScroll: true });
+    };
+
+    finishButton.addEventListener('click', () => {
+      const status = document.querySelector('#finish-status');
+      const invalidEntry = allEntries.find((entry) => entry.value === '' || !entry.checkValidity());
+      if (invalidEntry) {
+        const card = invalidEntry.closest('[data-exercise]');
+        const checkbox = invalidEntry.closest('.set-row').querySelector('.set-check input');
+        checkbox.checked = false;
+        card.classList.remove('complete');
+        card.querySelector('[data-complete]').textContent = 'Complete exercise';
+        card.querySelector('.exercise-message').textContent = 'Add the actual result for every set.';
+        setCurrentExercise();
+        updateProgress();
+        status.textContent = 'Add the missing actual result before finishing.';
+        focusControl(invalidEntry);
+        return;
+      }
+
+      const remainingSets = allChecks.filter((checkbox) => !checkbox.checked).length;
+      if (remainingSets > 0) {
+        status.textContent = `Log the remaining ${remainingSets} ${remainingSets === 1 ? 'set' : 'sets'} before finishing.`;
+        focusControl(allChecks.find((checkbox) => !checkbox.checked));
+        return;
+      }
+
+      document.querySelectorAll('#workout-form input, [data-complete]').forEach((control) => { control.disabled = true; });
+      finishButton.textContent = 'Workout complete';
+      finishButton.classList.add('done');
+      finishButton.disabled = true;
+      status.textContent = 'Prototype complete. No workout data was saved.';
+    });
+
+    window.setInterval(() => {
+      elapsedSeconds += 1;
+      const minutes = Math.floor(elapsedSeconds / 60);
+      const seconds = String(elapsedSeconds % 60).padStart(2, '0');
+      timer.textContent = `${minutes}:${seconds}`;
+    }, 1000);
+
+    setCurrentExercise();
+    updateProgress();
+  </script>
+</body>
+</html>
